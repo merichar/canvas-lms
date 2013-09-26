@@ -1071,4 +1071,9 @@ class Enrollment < ActiveRecord::Base
       self.last_activity_at = as_of
     end
   end
+
+  before_save :hook_before_save                                                 
+  def hook_before_save                                                          
+    CanvasHook.instance.before_save_enrollment self                             
+  end   
 end

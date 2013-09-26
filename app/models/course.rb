@@ -3142,4 +3142,17 @@ class Course < ActiveRecord::Base
   def draft_state_enabled?
     (root_account.allow_draft? && enable_draft?) || root_account.enable_draft?
   end
+
+  
+  before_save :hook_before_save
+  def hook_before_save
+    CanvasHook.instance.before_save_course( self )
+  end
+
+  
+  def hook_after_activate
+    CanvasHook.instance.after_course_activation( self )
+  end
+
+
 end

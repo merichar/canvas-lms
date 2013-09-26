@@ -2493,4 +2493,10 @@ class User < ActiveRecord::Base
       User.where(:id => self).update_all(:last_logged_out => Time.zone.now)
     end
   end
+
+  after_create :canvas_hook_after_create
+  def canvas_hook_after_create
+    CanvasHook.instance.after_create_user( self )
+  end
+
 end

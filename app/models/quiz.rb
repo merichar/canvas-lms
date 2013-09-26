@@ -600,6 +600,9 @@ class Quiz < ActiveRecord::Base
     else
       submission.with_versioning(true, &:save!)
     end
+
+    CanvasHook.instance.after_save_quiz_submission submission
+
     submission
   end
 

@@ -78,6 +78,9 @@ class QuizSubmissionsController < ApplicationController
         @submission = @quiz.quiz_submissions.find_by_temporary_user_code(temporary_user_code(false))
       else
         @submission = @quiz.quiz_submissions.find_by_user_id(@current_user.id)
+
+        CanvasHook.instance.after_quiz_snapshot @submission
+
         if @submission.present? && !@submission.valid_token?(params[:validation_token])
           if params[:action] == 'record_answer'
             flash[:error] = t('errors.invalid_submissions', "This quiz submission could not be verified as belonging to you.  Please try again.")
